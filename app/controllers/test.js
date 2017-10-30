@@ -1,3 +1,5 @@
+//loading the modules
+
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -6,6 +8,7 @@ var Test = mongoose.model('exam');
 module.exports = function (app, config) {
     app.use('/api', router);
 
+    //creating the post
  router.post('/document', function (req, res, next) {
         console.log('Create document', 'verbose');
         var user = new Test(req.body);
@@ -17,7 +20,7 @@ module.exports = function (app, config) {
            return next(err);
         });
       })
-  
+  //creating the get
 router.get('/documents', function (req, res, next) {
         console.log('Get document', 'verbose');
         var query = Test.find()

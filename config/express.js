@@ -1,3 +1,4 @@
+//load required modules
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
@@ -8,7 +9,7 @@ var glob = require('glob');
 
 module.exports = function (app, config) {
  
-
+//connect to the db with mongoose
 console.log("Loading Mongoose functionality");
 mongoose.Promise = require('bluebird');
 mongoose.connect(config.db, {useMongoClient: true});
@@ -26,12 +27,13 @@ app.use(function (req, res, next) {
     next();
   });
 
-
+//use body parser to parse data for port use
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
   }));
 
+  //load models
 var models = glob.sync(config.root + '/app/models/*.js');
 models.forEach(function (model) {
   require(model);
@@ -44,6 +46,7 @@ controllers.forEach(function (controller) {
 
 require('../app/controllers/test')(app, config);
 
+//create error handlers 404 and 500
 app.use(function (req, res, next) {
   console.log('Request from ' + req.connection.remoteAddress);
   next();
